@@ -12,6 +12,7 @@ class Scraper:
         self.session = aiohttp.ClientSession()
 
     async def scrape(self, page_limit):
+        print(page_limit,"aa")
         products = []
         for page in range(1, page_limit + 1):
             url = f"https://dentalstall.com/shop/page/{page}/"

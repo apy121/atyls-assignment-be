@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends,Form
 from fastapi.security import APIKeyHeader
 import os
 from dotenv import load_dotenv
@@ -31,13 +31,14 @@ def get_api_key(api_key: str = Depends(api_key_header)):
     return api_key
 
 @app.post("/scrape/")
-async def scrape_products(page_limit: int = 5, proxy: str = None, api_key: str = Depends(get_api_key)):
+async def scrape_products(page_limit: int = Form(5), proxy: str = None, api_key: str = Depends(get_api_key)):
     scraper = Scraper(proxy)
     cache = Cache()
     db = Database()
     notifier = Notifier()
 
     try:
+        print(page_limit)
         products, updated_count = await scraper.scrape(page_limit)
         cache.update_cache(products)
         db.store_products([p for p in products if p is not None and not cache.is_cached(p)])
