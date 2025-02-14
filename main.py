@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import APIKeyHeader
 import os
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
+
 
 from services.cache import Cache
 from services.database import Database
@@ -13,6 +15,15 @@ API_TOKEN = os.getenv("API_TOKEN", "default_secret_token")
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 app = FastAPI()
+
+# Allow frontend to access backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change "*" to your frontend's domain for security
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def get_api_key(api_key: str = Depends(api_key_header)):
     if api_key != API_TOKEN:
