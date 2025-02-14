@@ -61,7 +61,7 @@ pytest
 ## Get Scrap Data CURL
 To run tests (if any are included), use:
 ```sh
-curl --location 'https://atyls-assignment-be.onrender.com/scrape/' \
+curl --location 'http://127.0.0.1:8000/scrape/' \
 --header 'X-API-Key: default_secret_token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'page_limit=5'
